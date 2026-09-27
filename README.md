@@ -3,7 +3,7 @@
 This is a technical assessment project demonstrating a simple application to manage locations on a map[cite: 3]. 
 
 ## 🚀 Live Demo
-[Insert your GitHub Pages or Vercel link here]
+[https://irina-kosse.github.io/map-marker/](https://irina-kosse.github.io/map-marker/)
 
 ## 🛠 Tech Stack & Architecture
 - **Framework:** Angular 22 (Standalone & Zoneless approach for optimal performance)[cite: 3].
