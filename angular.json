@@ -38,6 +38,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/map-marker/",
               "budgets": [
                 {
                   "type": "initial",
@@ -97,7 +98,10 @@
           }
         },
         "deploy": {
-          "builder": "angular-cli-ghpages:deploy"
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "baseHref": "/map-marker/"
+          }
         }
       }
     }
