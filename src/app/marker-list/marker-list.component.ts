@@ -3,6 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Store } from '@ngxs/store';
 import { DialogService, DynamicDialogModule, DynamicDialogRef } from 'primeng/dynamicdialog';
+import { ConfirmPopupModule } from 'primeng/confirmpopup';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { ConfirmationService } from 'primeng/api';
 import { Marker, CreateMarkerDto } from '../models/marker.model';
 import { AddMarker, DeleteMarker, SelectMarker, ClearAllMarkers, UpdateMarker, UpdateMarkerDto } from '../store/markers/marker.actions';
 import { MarkerState } from '../store/markers/marker.state';
@@ -11,14 +14,15 @@ import { MarkerDialogComponent } from '../marker-dialog/marker-dialog.component'
 @Component({
   selector: 'app-marker-list',
   standalone: true,
-  imports: [CommonModule, FormsModule, DynamicDialogModule],
-  providers: [DialogService],
+  imports: [CommonModule, FormsModule, DynamicDialogModule, ConfirmPopupModule, ConfirmDialogModule],
+  providers: [DialogService, ConfirmationService],
   templateUrl: './marker-list.component.html',
   styleUrl: './marker-list.component.scss'
 })
 export class MarkerListComponent implements OnDestroy {
   private readonly store = inject(Store);
   private readonly dialogService = inject(DialogService);
+  private readonly confirmationService = inject(ConfirmationService);
   private dialogRef?: DynamicDialogRef;
 
   readonly markers = this.store.selectSignal(MarkerState.getMarkers);
@@ -83,13 +87,38 @@ export class MarkerListComponent implements OnDestroy {
 
   onDelete(id: string, event: MouseEvent): void {
     event.stopPropagation();
-    this.store.dispatch(new DeleteMarker(id));
+    this.confirmationService.confirm({
+      key: 'confirmDialog',
+      header: 'Delete Marker',
+      message: 'Are you sure you want to proceed?',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonProps: {
+        severity: 'danger',
+        label: 'Delete'
+      },
+      rejectButtonProps: {
+        severity: 'secondary',
+        label: 'Cancel'
+      },
+      accept: () => {
+        this.store.dispatch(new DeleteMarker(id));
+      }
+    });
   }
 
-  onClearAll(): void {
-    if (confirm('Are you sure you want to remove all markers?')) {
-      this.store.dispatch(new ClearAllMarkers());
-    }
+  onClearAll(event: Event): void {
+    this.confirmationService.confirm({
+      key: 'confirmPopup',
+      target: event.currentTarget as HTMLElement,
+      message: 'Are you sure you want to proceed?',
+      icon: 'pi pi-exclamation-triangle',
+      acceptButtonProps: {
+        severity: 'danger'
+      },
+      accept: () => {
+        this.store.dispatch(new ClearAllMarkers());
+      }
+    });
   }
 
   ngOnDestroy(): void {

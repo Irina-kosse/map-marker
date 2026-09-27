@@ -6,6 +6,7 @@ import Aura from '@primeuix/themes/aura';
 import { DialogService } from 'primeng/dynamicdialog';
 import { provideStore } from '@ngxs/store';
 import { withNgxsLoggerPlugin } from '@ngxs/logger-plugin';
+import { withNgxsStoragePlugin } from '@ngxs/storage-plugin';
 import { routes } from './app.routes';
 import { MarkerState } from './store/markers/marker.state';
 
@@ -22,7 +23,23 @@ export const appConfig: ApplicationConfig = {
     DialogService,
     provideStore(
       [MarkerState],
-      withNgxsLoggerPlugin()
+
+      withNgxsLoggerPlugin(),
+      withNgxsStoragePlugin({
+        keys: [MarkerState],
+        afterDeserialize: (obj, key) => {
+          if (key === 'markers' && obj && Array.isArray(obj.markers)) {
+            return {
+              ...obj,
+              markers: obj.markers.map((m: any) => ({
+                ...m,
+                createdAt: new Date(m.createdAt)
+              }))
+            };
+          }
+          return obj;
+        }
+      })
     )
   ]
 };

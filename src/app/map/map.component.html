@@ -1,1 +1,42 @@
-<div #mapContainer class="map-component"></div>
+<div class="map-wrapper">
+  <div #mapContainer class="map-component"></div>
+  <!-- Hidden anchor element positioned dynamically at the marker's screen coordinates -->
+  <div #popoverAnchor class="popover-anchor"></div>
+</div>
+
+<!-- Marker Context Popover -->
+<p-popover #markerPopover>
+  @if (contextMarker) {
+    <div class="marker-popover">
+      <div class="marker-popover-header">
+        <span
+          class="popover-dot"
+          [style.background-color]="contextMarker.style?.color || '#3b82f6'"
+          [style.opacity]="contextMarker.style?.opacity ?? 1">
+        </span>
+        <span class="popover-title">{{ contextMarker.title }}</span>
+      </div>
+
+      <div class="marker-popover-actions">
+        <button
+          type="button"
+          class="popover-btn edit-btn"
+          (click)="onEditFromPopover()">
+          <i class="pi pi-pencil"></i>
+          <span>Edit</span>
+        </button>
+
+        <button
+          type="button"
+          class="popover-btn delete-btn"
+          (click)="onDeleteFromPopover($event)">
+          <i class="pi pi-trash"></i>
+          <span>Delete</span>
+        </button>
+      </div>
+    </div>
+  }
+</p-popover>
+
+<!-- Confirmation Popup for Delete -->
+<p-confirmpopup />

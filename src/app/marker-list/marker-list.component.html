@@ -97,9 +97,15 @@
   <!-- Footer Actions -->
   @if (markerCount() > 0) {
     <footer class="sidebar-footer">
-      <button type="button" class="btn-danger-ghost" (click)="onClearAll()">
+      <button type="button" class="btn-danger-ghost" (click)="onClearAll($event)">
         Clear All Markers
       </button>
     </footer>
   }
+
+  <!-- Confirm Popup for Clear All -->
+  <p-confirmpopup key="confirmPopup" />
+
+  <!-- Confirm Dialog for Delete Marker Card -->
+  <p-confirmdialog key="confirmDialog" [style]="{ width: '380px' }" />
 </div>
