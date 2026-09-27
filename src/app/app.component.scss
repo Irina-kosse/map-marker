@@ -1,0 +1,27 @@
+.main-layout {
+  display: flex;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+}
+
+.sidebar {
+  width: 360px;
+  min-width: 320px;
+  max-width: 420px;
+  height: 100%;
+  border-right: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: #ffffff;
+  box-shadow: 2px 0 8px rgba(0, 0, 0, 0.03);
+  z-index: 10;
+}
+
+.map-container {
+  flex: 1;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}

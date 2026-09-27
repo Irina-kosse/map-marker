@@ -1,0 +1,87 @@
+<form class="dialog-form" (ngSubmit)="onSave()">
+  <div class="form-group">
+    <label for="dlgTitle">Title *</label>
+    <input
+      id="dlgTitle"
+      name="title"
+      type="text"
+      required
+      placeholder="e.g. Favorite Coffee Shop"
+      [(ngModel)]="title"
+      class="form-control"
+      autofocus
+    />
+  </div>
+
+  <div class="form-group">
+    <label for="dlgDesc">Description</label>
+    <textarea
+      id="dlgDesc"
+      name="description"
+      rows="2"
+      placeholder="Optional notes or address..."
+      [(ngModel)]="description"
+      class="form-control"
+    ></textarea>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="dlgLat">Latitude (-90..90)</label>
+      <input
+        id="dlgLat"
+        name="latitude"
+        type="number"
+        step="any"
+        [(ngModel)]="latitude"
+        class="form-control"
+      />
+    </div>
+    <div class="form-group">
+      <label for="dlgLng">Longitude (-180..180)</label>
+      <input
+        id="dlgLng"
+        name="longitude"
+        type="number"
+        step="any"
+        [(ngModel)]="longitude"
+        class="form-control"
+      />
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group">
+      <label for="dlgColor">Color</label>
+      <div class="color-picker-wrapper">
+        <input
+          id="dlgColor"
+          name="color"
+          type="color"
+          [(ngModel)]="color"
+        />
+        <span class="color-hex">{{ color }}</span>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="dlgOpacity">Opacity: {{ opacity }}</label>
+      <input
+        id="dlgOpacity"
+        name="opacity"
+        type="range"
+        min="0.1"
+        max="1"
+        step="0.05"
+        [(ngModel)]="opacity"
+      />
+    </div>
+  </div>
+
+  <div class="dialog-actions">
+    <button type="button" class="btn-cancel" (click)="onCancel()">Cancel</button>
+    <button type="submit" class="btn-save" [disabled]="!title.trim()">
+      {{ isEditMode ? 'Update' : 'Save' }}
+    </button>
+  </div>
+</form>

@@ -1,0 +1,105 @@
+<div class="sidebar-container">
+  <!-- Header -->
+  <header class="sidebar-header">
+    <div class="title-row">
+      <div class="title-with-badge">
+        <h2>Markers</h2>
+        <span class="badge">{{ markerCount() }}</span>
+      </div>
+      <button
+        type="button"
+        class="btn-primary"
+        (click)="openAddDialog()">
+        + Add
+      </button>
+    </div>
+
+    <!-- Search box -->
+    @if (markerCount() > 0) {
+      <div class="search-box">
+        <input
+          type="text"
+          placeholder="Search markers..."
+          [ngModel]="searchQuery()"
+          (ngModelChange)="searchQuery.set($event)"
+          class="input-search"
+        />
+      </div>
+    }
+  </header>
+
+  <!-- Markers List -->
+  <div class="markers-list">
+    @if (markers().length === 0) {
+      <div class="empty-state">
+        <div class="empty-icon">📍</div>
+        <p class="empty-title">No markers yet</p>
+        <p class="empty-subtitle">Click "+ Add" to drop your first marker on the map.</p>
+      </div>
+    } @else if (filteredMarkers().length === 0) {
+      <div class="empty-state">
+        <p class="empty-title">No matching markers</p>
+        <p class="empty-subtitle">Try another search query.</p>
+      </div>
+    } @else {
+      @for (marker of filteredMarkers(); track marker.id) {
+        <div
+          class="marker-card"
+          [class.active]="selectedMarker()?.id === marker.id"
+          (click)="onSelect(marker)">
+          <div class="marker-card-header">
+            <span
+              class="marker-color-dot"
+              [style.background-color]="marker.style?.color || '#3b82f6'"
+              [style.opacity]="marker.style?.opacity ?? 1">
+            </span>
+            <strong class="marker-title">{{ marker.title }}</strong>
+
+            <div class="card-actions">
+              <!-- Edit icon button -->
+              <button
+                type="button"
+                class="btn-icon btn-edit"
+                title="Edit marker"
+                (click)="onEdit(marker, $event)">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path>
+                </svg>
+              </button>
+
+              <!-- Delete icon button -->
+              <button
+                type="button"
+                class="btn-icon btn-delete"
+                title="Delete marker"
+                (click)="onDelete(marker.id, $event)">
+                <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+          </div>
+
+          @if (marker.description) {
+            <p class="marker-desc">{{ marker.description }}</p>
+          }
+
+          <div class="marker-coords">
+            <span class="coord-tag">Lat: {{ marker.latitude | number: '1.4-4' }}</span>
+            <span class="coord-tag">Lng: {{ marker.longitude | number: '1.4-4' }}</span>
+          </div>
+        </div>
+      }
+    }
+  </div>
+
+  <!-- Footer Actions -->
+  @if (markerCount() > 0) {
+    <footer class="sidebar-footer">
+      <button type="button" class="btn-danger-ghost" (click)="onClearAll()">
+        Clear All Markers
+      </button>
+    </footer>
+  }
+</div>

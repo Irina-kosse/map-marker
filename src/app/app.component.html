@@ -1,2 +1,11 @@
-<app-map></app-map>
-<router-outlet />
+<div class="main-layout">
+  <!-- Sidebar with list of markers -->
+  <aside class="sidebar">
+    <app-marker-list></app-marker-list>
+  </aside>
+
+  <!-- Map container that takes all spare space -->
+  <main class="map-container">
+    <app-map></app-map>
+  </main>
+</div>
